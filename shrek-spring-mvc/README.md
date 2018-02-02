@@ -26,7 +26,6 @@ shrek-spring-mvc
 				class="org.nicksun.shrek.spring.mvc.web.argument.PageArgumentResolver" />
 		</argument-resolvers>
 	</annotation-driven>
-	
 	<beans:bean id="jsonMethodProcessor"
 		class="org.nicksun.shrek.spring.mvc.web.JsonMethodProcessor">
 		<beans:property name="messageConverter" ref="messageConverter"></beans:property>
@@ -55,20 +54,16 @@ shrek-spring-mvc
 			</beans:list>
 		</beans:property>
 	</beans:bean>
-	
 	<beans:bean id="defaultProtocol" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
         <beans:property name="staticField" value="org.nicksun.shrek.spring.mvc.web.http.MessageProtocol.TEXT" />
-  </beans:bean>
-    
+	</beans:bean>
 	<beans:bean
 		class="org.nicksun.shrek.spring.mvc.web.mapping.RequestMappingHandlerAdapterPostProcessor">
 		<beans:property name="jsonMethodProcessor" ref="jsonMethodProcessor"></beans:property>
 	</beans:bean>
-
 	<beans:bean id="messageConverter"
 		class="org.nicksun.shrek.spring.mvc.web.JsonMethodHttpMessageConverter">
 	</beans:bean>
-
 	<beans:bean id="exceptionResolver"
 		class="org.nicksun.shrek.spring.mvc.web.JsonMethodHandlerExceptionResolver">
 		<beans:property name="messageConverter" ref="messageConverter"></beans:property>
@@ -94,7 +89,7 @@ shrek-spring-mvc
 
 2.在Controller中是用@RequestJson @ResponseJson<br>
 
-      @RequestMapping("/test")
+	@RequestMapping("/test")
 	@ResponseJson
 	public void test(@RequestJson Integer id) {
 		
