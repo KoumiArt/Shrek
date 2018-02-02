@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.nicksun.shrek.spring.mvc.web.annotation.ResponseJson;
-import org.nicksun.shrek.spring.mvc.web.http.HttpAcceptEncodingHandler;
+import org.nicksun.shrek.spring.mvc.web.http.HttpContentEncodingHandler;
 import org.nicksun.shrek.spring.mvc.web.http.MessageProtocol;
 import org.nicksun.shrek.spring.mvc.web.protocol.MessageProtocolProcessor;
 import org.nicksun.shrek.spring.mvc.web.returnvalue.ErrorCode;
@@ -47,15 +47,11 @@ public class JsonMethodHandlerExceptionResolver extends AbstractHandlerException
 
 	private List<MessageProtocolProcessor> protocolProcessors;
 
-	private List<HttpAcceptEncodingHandler> httpAcceptEncodingHandlers;
+	private List<HttpContentEncodingHandler> httpContentEncodingHandlers;
 
 	private MessageProtocol defaultProtocol = MessageProtocol.TEXT;
 
-	private boolean enableHttpAcceptEncoding = false;
-
-	public void setEnableHttpAcceptEncoding(boolean enableHttpAcceptEncoding) {
-		this.enableHttpAcceptEncoding = enableHttpAcceptEncoding;
-	}
+	private boolean enableHttpContentEncoding = false;
 
 	public JsonMethodHandlerExceptionResolver() {
 		this.objectMapper = ObjectMapperFactory.getDefaultObjectMapper();
@@ -73,12 +69,16 @@ public class JsonMethodHandlerExceptionResolver extends AbstractHandlerException
 		this.protocolProcessors = protocolProcessors;
 	}
 
-	public void setHttpAcceptEncodingHandlers(List<HttpAcceptEncodingHandler> httpAcceptEncodingHandlers) {
-		this.httpAcceptEncodingHandlers = httpAcceptEncodingHandlers;
-	}
-
 	public void setDefaultProtocol(MessageProtocol defaultProtocol) {
 		this.defaultProtocol = defaultProtocol;
+	}
+
+	public void setHttpContentEncodingHandlers(List<HttpContentEncodingHandler> httpContentEncodingHandlers) {
+		this.httpContentEncodingHandlers = httpContentEncodingHandlers;
+	}
+
+	public void setEnableHttpContentEncoding(boolean enableHttpContentEncoding) {
+		this.enableHttpContentEncoding = enableHttpContentEncoding;
 	}
 
 	protected boolean support(Object handler) {
@@ -111,16 +111,13 @@ public class JsonMethodHandlerExceptionResolver extends AbstractHandlerException
 			}
 			// write byte[]
 			byte[] bytes = objectMapper.writeValueAsBytes(failData);
-			// 获取请求的 acceptEncodings
-			String[] acceptEncodings = StringUtils.toStringArray(request.getHeaders(HttpHeaders.ACCEPT_ENCODING));
-			if (ArrayUtils.isNotEmpty(acceptEncodings)) {
-				if (CollectionUtils.isEmpty(httpAcceptEncodingHandlers)) {
-					throw new Exception("httpAcceptEncodingHandlers undefined");
-				}
-				for (String a : acceptEncodings) {
-					for (HttpAcceptEncodingHandler h : httpAcceptEncodingHandlers) {
-						if (h.supports(a)) {
-							h.encoding(bytes);
+			// 获取请求的 contentEncodings
+			String[] contentEncodings = StringUtils.toStringArray(request.getHeaders(HttpHeaders.CONTENT_ENCODING));
+			if (ArrayUtils.isNotEmpty(contentEncodings)) {
+				for (String c : contentEncodings) {
+					for (HttpContentEncodingHandler h : httpContentEncodingHandlers) {
+						if (h.supports(c)) {
+							h.compress(bytes);
 						}
 					}
 				}
@@ -150,9 +147,9 @@ public class JsonMethodHandlerExceptionResolver extends AbstractHandlerException
 		if (CollectionUtils.isEmpty(protocolProcessors)) {
 			throw new Exception("protocolProcessors undefined");
 		}
-		if (enableHttpAcceptEncoding) {
-			if (CollectionUtils.isEmpty(httpAcceptEncodingHandlers)) {
-				throw new Exception("httpAcceptEncodingHandlers undefined");
+		if (enableHttpContentEncoding) {
+			if (CollectionUtils.isEmpty(httpContentEncodingHandlers)) {
+				throw new Exception("httpContentEncodingHandlers undefined");
 			}
 		}
 	}

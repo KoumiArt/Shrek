@@ -4,8 +4,7 @@ shrek-spring-mvc
 基于spring-mvc框架的封装 <br>
 使用步骤：<br>
 1.spring 配置文件增加<br>
-```
-   <!-- Enables the Spring MVC @Controller programming model -->
+
 	<annotation-driven>
 		<async-support default-timeout="57000" task-executor="requestExecutor">
 		</async-support>
@@ -20,15 +19,14 @@ shrek-spring-mvc
 				class="org.springframework.http.converter.ResourceHttpMessageConverter"></beans:bean>
 			<beans:bean
 				class="org.springframework.http.converter.xml.SourceHttpMessageConverter"></beans:bean>
-			<beans:bean
-				class="org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter"></beans:bean>
+			<beans:bean class="org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter"></beans:bean>
 		</message-converters>
 		<argument-resolvers>
 			<beans:bean
 				class="org.nicksun.shrek.spring.mvc.web.argument.PageArgumentResolver" />
 		</argument-resolvers>
 	</annotation-driven>
-
+	
 	<beans:bean id="jsonMethodProcessor"
 		class="org.nicksun.shrek.spring.mvc.web.JsonMethodProcessor">
 		<beans:property name="messageConverter" ref="messageConverter"></beans:property>
@@ -47,13 +45,13 @@ shrek-spring-mvc
 					class="org.nicksun.shrek.spring.mvc.web.returnvalue.impl.DefaultBeanWrapper" />
 			</beans:list>
 		</beans:property>
-		<!-- 启用 http header accept-encoding 处理器-->
-		<beans:property name="enableHttpAcceptEncoding" value="true"></beans:property>
-		<!-- http header accept-encoding 处理器-->
-		<beans:property name="httpAcceptEncodingHandlers">
+		<!-- 启用 http header content-encoding 处理器-->
+		<beans:property name="enableHttpContentEncoding" value="true"></beans:property>
+		<!-- http header content-encoding 处理器-->
+		<beans:property name="httpContentEncodingHandlers">
 			<beans:list>
 				<beans:bean
-					class="org.nicksun.shrek.spring.mvc.web.http.impl.GzipHttpAcceptEncodingHandler" />
+					class="org.nicksun.shrek.spring.mvc.web.http.impl.GzipHttpContentEncodingHandler" />
 			</beans:list>
 		</beans:property>
 	</beans:bean>
@@ -83,25 +81,27 @@ shrek-spring-mvc
 					class="org.nicksun.shrek.spring.mvc.web.protocol.impl.Base64MessageProtocolProcessor"></beans:bean>
 			</beans:list>
 		</beans:property>
-		<beans:property name="httpAcceptEncodingHandlers">
+		<!-- 启用 http header content-encoding 处理器-->
+		<beans:property name="enableHttpContentEncoding" value="true"></beans:property>
+		<!-- http header content-encoding 处理器-->
+		<beans:property name="httpContentEncodingHandlers">
 			<beans:list>
 				<beans:bean
-					class="org.nicksun.shrek.spring.mvc.web.http.impl.GzipHttpAcceptEncodingHandler" />
+					class="org.nicksun.shrek.spring.mvc.web.http.impl.GzipHttpContentEncodingHandler" />
 			</beans:list>
 		</beans:property>
 	</beans:bean>
-```
+
 2.在Controller中是用@RequestJson @ResponseJson<br>
-```
-  @RequestMapping("/test")
+
+      @RequestMapping("/test")
 	@ResponseJson
 	public void test(@RequestJson Integer id) {
 		
 	}
 	
-	@RequestMapping("/test4")
+	@RequestMapping("/test1")
 	@ResponseJson(protocol = MessageProtocol.BASE64)
-	public TestParams test4(@RequestJson(protocol = MessageProtocol.BASE64) @NotNull @Validated TestParams params) {
+	public TestParams test1(@RequestJson(protocol = MessageProtocol.BASE64) TestParams params) {
 		return params;
 	}
-```

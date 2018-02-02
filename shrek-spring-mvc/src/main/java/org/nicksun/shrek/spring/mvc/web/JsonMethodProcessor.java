@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.nicksun.shrek.spring.mvc.web.annotation.RequestJson;
 import org.nicksun.shrek.spring.mvc.web.annotation.ResponseJson;
 import org.nicksun.shrek.spring.mvc.web.annotation.ResponseJson.Location;
-import org.nicksun.shrek.spring.mvc.web.http.HttpAcceptEncodingHandler;
+import org.nicksun.shrek.spring.mvc.web.http.HttpContentEncodingHandler;
 import org.nicksun.shrek.spring.mvc.web.http.MessageProtocol;
 import org.nicksun.shrek.spring.mvc.web.protocol.MessageProtocolProcessor;
 import org.nicksun.shrek.spring.mvc.web.returnvalue.BeanWrapper;
@@ -62,16 +62,16 @@ public class JsonMethodProcessor
 
 	private List<MessageProtocolProcessor> protocolProcessors;
 
-	private List<HttpAcceptEncodingHandler> httpAcceptEncodingHandlers;
+	private List<HttpContentEncodingHandler> httpContentEncodingHandlers;
 
-	private boolean enableHttpAcceptEncoding = false;
+	private boolean enableHttpContentEncoding = false;
 
-	public void setEnableHttpAcceptEncoding(boolean enableHttpAcceptEncoding) {
-		this.enableHttpAcceptEncoding = enableHttpAcceptEncoding;
+	public void setHttpContentEncodingHandlers(List<HttpContentEncodingHandler> httpContentEncodingHandlers) {
+		this.httpContentEncodingHandlers = httpContentEncodingHandlers;
 	}
 
-	public void setHttpAcceptEncodingHandlers(List<HttpAcceptEncodingHandler> httpAcceptEncodingHandlers) {
-		this.httpAcceptEncodingHandlers = httpAcceptEncodingHandlers;
+	public void setEnableHttpContentEncoding(boolean enableHttpContentEncoding) {
+		this.enableHttpContentEncoding = enableHttpContentEncoding;
 	}
 
 	public void setDefaultProtocol(MessageProtocol defaultProtocol) {
@@ -112,14 +112,14 @@ public class JsonMethodProcessor
 				return null;
 			}
 			byte[] bytes = params.getBytes();
-			if (enableHttpAcceptEncoding) {
-				// http header accept-encoding
-				String[] acceptEncodings = webRequest.getHeaderValues(HttpHeaders.ACCEPT_ENCODING);
-				if (ArrayUtils.isNotEmpty(acceptEncodings)) {
-					for (String a : acceptEncodings) {
-						for (HttpAcceptEncodingHandler h : httpAcceptEncodingHandlers) {
-							if (h.supports(a)) {
-								h.decoding(bytes);
+			if (enableHttpContentEncoding) {
+				// http header content-encoding
+				String[] contentEncodings = webRequest.getHeaderValues(HttpHeaders.CONTENT_ENCODING);
+				if (ArrayUtils.isNotEmpty(contentEncodings)) {
+					for (String c : contentEncodings) {
+						for (HttpContentEncodingHandler h : httpContentEncodingHandlers) {
+							if (h.supports(c)) {
+								h.decompress(bytes);
 							}
 						}
 					}
@@ -234,14 +234,14 @@ public class JsonMethodProcessor
 			}
 		}
 
-		if (enableHttpAcceptEncoding) {
-			// 获取请求的 acceptEncodings
-			String[] acceptEncodings = webRequest.getHeaderValues(HttpHeaders.ACCEPT_ENCODING);
-			if (ArrayUtils.isNotEmpty(acceptEncodings)) {
-				for (String a : acceptEncodings) {
-					for (HttpAcceptEncodingHandler h : httpAcceptEncodingHandlers) {
-						if (h.supports(a)) {
-							h.encoding(bytes);
+		if (enableHttpContentEncoding) {
+			// 获取请求的 contentEncodings
+			String[] contentEncodings = webRequest.getHeaderValues(HttpHeaders.CONTENT_ENCODING);
+			if (ArrayUtils.isNotEmpty(contentEncodings)) {
+				for (String c : contentEncodings) {
+					for (HttpContentEncodingHandler h : httpContentEncodingHandlers) {
+						if (h.supports(c)) {
+							h.compress(bytes);
 						}
 					}
 				}
@@ -262,9 +262,9 @@ public class JsonMethodProcessor
 		if (CollectionUtils.isEmpty(protocolProcessors)) {
 			throw new Exception("protocolProcessors undefined");
 		}
-		if (enableHttpAcceptEncoding) {
-			if (CollectionUtils.isEmpty(httpAcceptEncodingHandlers)) {
-				throw new Exception("httpAcceptEncodingHandlers undefined");
+		if (enableHttpContentEncoding) {
+			if (CollectionUtils.isEmpty(httpContentEncodingHandlers)) {
+				throw new Exception("httpContentEncodingHandlers undefined");
 			}
 		}
 	}

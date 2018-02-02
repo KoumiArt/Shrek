@@ -4,8 +4,7 @@ shrek-validator
 基于shrek-spring-mvc的验证框架<br>
 使用步骤：<br>
 1.spring 配置文件增加<br>
-```
-   <!-- Enables the Spring MVC @Controller programming model -->
+
 	<annotation-driven>
 		<async-support default-timeout="57000" task-executor="requestExecutor">
 		</async-support>
@@ -28,7 +27,7 @@ shrek-validator
 				class="org.nicksun.shrek.spring.mvc.web.argument.PageArgumentResolver" />
 		</argument-resolvers>
 	</annotation-driven>
-
+	
 	<beans:bean id="jsonMethodProcessor"
 		class="org.nicksun.shrek.validator.JsonMethodSupportVaildatorProcessor">
 		<beans:property name="messageConverter" ref="messageConverter"></beans:property>
@@ -47,13 +46,13 @@ shrek-validator
 					class="org.nicksun.shrek.spring.mvc.web.returnvalue.impl.DefaultBeanWrapper" />
 			</beans:list>
 		</beans:property>
-		<!-- 启用 http header accept-encoding 处理器-->
-		<beans:property name="enableHttpAcceptEncoding" value="true"></beans:property>
-		<!-- http header accept-encoding 处理器-->
-		<beans:property name="httpAcceptEncodingHandlers">
+		<!-- 启用 http header content-encoding 处理器-->
+		<beans:property name="enableHttpContentEncoding" value="true"></beans:property>
+		<!-- http header content-encoding 处理器-->
+		<beans:property name="httpContentEncodingHandlers">
 			<beans:list>
 				<beans:bean
-					class="org.nicksun.shrek.spring.mvc.web.http.impl.GzipHttpAcceptEncodingHandler" />
+					class="org.nicksun.shrek.spring.mvc.web.http.impl.GzipHttpContenttEncodingHandler" />
 			</beans:list>
 		</beans:property>
 		<beans:property name="validatorArgumentResolver" ref="validatorArgumentResolver"></beans:property>
@@ -68,7 +67,7 @@ shrek-validator
 	
 	<beans:bean id="defaultProtocol" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
         <beans:property name="staticField" value="org.nicksun.shrek.spring.mvc.web.http.MessageProtocol.TEXT" />
-  </beans:bean>
+     </beans:bean>
     
 	<beans:bean
 		class="org.nicksun.shrek.spring.mvc.web.mapping.RequestMappingHandlerAdapterPostProcessor">
@@ -91,17 +90,20 @@ shrek-validator
 					class="org.nicksun.shrek.spring.mvc.web.protocol.impl.Base64MessageProtocolProcessor"></beans:bean>
 			</beans:list>
 		</beans:property>
-		<beans:property name="httpAcceptEncodingHandlers">
+		<!-- 启用 http header content-encoding 处理器-->
+		<beans:property name="enableHttpContentEncoding" value="true"></beans:property>
+		<!-- http header content-encoding 处理器-->
+		<beans:property name="httpContentEncodingHandlers">
 			<beans:list>
 				<beans:bean
-					class="org.nicksun.shrek.spring.mvc.web.http.impl.GzipHttpAcceptEncodingHandler" />
+					class="org.nicksun.shrek.spring.mvc.web.http.impl.GzipHttpContenttEncodingHandler" />
 			</beans:list>
 		</beans:property>
 	</beans:bean>
-```
+
 2.在Controller中是用@RequestJson @ResponseJson<br>
-```
-  @RequestMapping("/test")
+
+      @RequestMapping("/test")
 	@ResponseJson
 	public void test(@RequestJson Integer id) {
 		
@@ -112,4 +114,3 @@ shrek-validator
 	public TestParams test4(@RequestJson(protocol = MessageProtocol.BASE64) @NotNull @Validated TestParams params) {
 		return params;
 	}
-```

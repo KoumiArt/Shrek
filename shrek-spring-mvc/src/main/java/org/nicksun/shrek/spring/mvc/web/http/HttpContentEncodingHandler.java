@@ -2,29 +2,33 @@ package org.nicksun.shrek.spring.mvc.web.http;
 
 /**
  * 处理http header中accept-encoding
+ * 
  * @author nicksun
- *  
+ * 
  */
-public interface HttpAcceptEncodingHandler {
-	
+public interface HttpContentEncodingHandler {
+
 	/**
 	 * 支持的accept-encoding
+	 * 
 	 * @param acceptEncoding
 	 * @return
 	 */
 	boolean supports(String acceptEncoding);
-	
+
 	/**
-	 * 编码
+	 * 压缩
+	 * 
 	 * @param bytes
 	 * @return
 	 */
-	byte[] encoding(byte[] bytes);
-	
+	byte[] compress(byte[] bytes);
+
 	/**
-	 * 解密
+	 * 解压
+	 * 
 	 * @param bytes
 	 * @return
 	 */
-	byte[] decoding(byte[] bytes);
+	byte[] decompress(byte[] bytes);
 }
