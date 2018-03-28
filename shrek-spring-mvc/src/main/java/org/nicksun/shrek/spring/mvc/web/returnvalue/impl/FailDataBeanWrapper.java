@@ -1,8 +1,5 @@
 package org.nicksun.shrek.spring.mvc.web.returnvalue.impl;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.nicksun.shrek.spring.mvc.web.returnvalue.ErrorCode;
 import org.nicksun.shrek.spring.mvc.web.returnvalue.ExceptionBeanWrapper;
