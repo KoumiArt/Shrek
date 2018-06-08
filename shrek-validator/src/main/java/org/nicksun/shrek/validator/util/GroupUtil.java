@@ -3,6 +3,10 @@ package org.nicksun.shrek.validator.util;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+/**
+ * @author nicksun
+ *
+ */
 public class GroupUtil {
 
 	public static boolean compare(Class<?>[] groups0, Class<?>[] groups1) {

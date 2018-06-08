@@ -24,9 +24,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 
+/**
+ * @author nicksun
+ *
+ */
 @Configuration
-public class ShrekValidatorAutoConfigure 
-{
+public class ShrekValidatorAutoConfigure {
+	
+	/**
+	 * @return
+	 */
 	@Bean
 	public RequestMappingHandlerAdapterPostProcessor requestMappingHandlerAdapterPostProcessor() {
 		RequestMappingHandlerAdapterPostProcessor processor = new RequestMappingHandlerAdapterPostProcessor();
@@ -34,6 +41,9 @@ public class ShrekValidatorAutoConfigure
 		return processor;
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public JsonMethodProcessor jsonMethodProcessor() {
 		JsonMethodSupportVaildatorProcessor jsonMethodProcessor = new JsonMethodSupportVaildatorProcessor();
@@ -46,7 +56,10 @@ public class ShrekValidatorAutoConfigure
 		jsonMethodProcessor.setValidatorArgumentResolver(this.validatorArgumentResolver());
 		return jsonMethodProcessor;
 	}
-	
+
+	/**
+	 * @return
+	 */
 	@Bean
 	public ValidatorArgumentResolver validatorArgumentResolver() {
 		DefaultValidatorArgumentResolver argumentResolver = new DefaultValidatorArgumentResolver();
@@ -54,41 +67,65 @@ public class ShrekValidatorAutoConfigure
 		return argumentResolver;
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public ValidatorHandlerResolver validatorHandlerManager() {
 		return new DefaultValidatorHandlerResolver();
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public List<MessageProtocolProcessor> protocolProcessors() {
 		return Arrays.asList(new DefaultMessageProtocolProcessor(), new Base64MessageProtocolProcessor());
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public List<HttpContentEncodingHandler> httpContentEncodingHandlers() {
 		return Arrays.asList(new GzipHttpContentEncodingHandler());
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public HttpMessageConverter<byte[]> messageConverter() {
 		return new JsonMethodHttpMessageConverter();
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public boolean enableHttpContentEncoding() {
 		return true;
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public MessageProtocol defaultProtocol() {
 		return MessageProtocol.TEXT;
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public List<BeanWrapper> beanWrappers() {
 		return Arrays.asList(new DefaultBeanWrapper());
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public JsonMethodHandlerExceptionResolver exceptionResolver() {
 		JsonMethodHandlerExceptionResolver jsonMethodHandlerExceptionResolver = new JsonMethodHandlerExceptionResolver();

@@ -27,6 +27,10 @@ public class ExcelUtil {
 	private static final int MAX_IMPORT_COUNT = 1000;
 
 	private static final int MAX_CAPACITY_SHEET = 5000;
+	
+	private static final String FILETYPE_XLSX = "xlsx";
+
+	private static final String FILETYPE_XLS = "xls";
 
 	private ExcelUtil() {
 
@@ -70,9 +74,9 @@ public class ExcelUtil {
 	public static <T, R> List<R> readExcel(InputStream input, String ext, int startRow, int maxImportCount,
 			Function<List<String>, R> func) throws Exception {
 		try {
-			if ("xlsx".equalsIgnoreCase(ext)) {
+			if (FILETYPE_XLSX.equalsIgnoreCase(ext)) {
 				return readExcel2007(input, startRow, maxImportCount, func);
-			} else if ("xls".equalsIgnoreCase(ext)) {
+			} else if (FILETYPE_XLS.equalsIgnoreCase(ext)) {
 				return readExcel2003(input, startRow, maxImportCount, func);
 			} else {
 				throw new Exception("不支持的文件格式");

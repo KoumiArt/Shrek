@@ -8,6 +8,10 @@ import java.lang.annotation.Target;
 
 import org.nicksun.shrek.spring.mvc.web.http.MessageProtocol;
 
+/**
+ * @author nicksun
+ *
+ */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
@@ -17,7 +21,22 @@ public @interface ResponseJson {
 
 	MessageProtocol protocol() default MessageProtocol.DEFAULT;
 
+	/**
+	 * @author nicksun
+	 *
+	 */
 	public enum Location {
-		UNDEFINED, DATA, MESSAGE
+		/**
+		 * 
+		 */
+		UNDEFINED,
+		/**
+		 * 
+		 */
+		DATA,
+		/**
+		 * 
+		 */
+		MESSAGE
 	}
 }

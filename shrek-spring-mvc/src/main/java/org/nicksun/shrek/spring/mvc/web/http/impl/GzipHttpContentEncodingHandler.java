@@ -13,6 +13,10 @@ import org.nicksun.shrek.spring.mvc.web.http.HttpContentEncodingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @author nicksun
+ *
+ */
 public class GzipHttpContentEncodingHandler implements HttpContentEncodingHandler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(GzipHttpContentEncodingHandler.class);

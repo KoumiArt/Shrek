@@ -13,6 +13,10 @@ import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
 
+/**
+ * @author nicksun
+ *
+ */
 public class RequestMappingHandlerAdapterPostProcessor implements BeanPostProcessor, InitializingBean {
 
 	private JsonMethodProcessor jsonMethodProcessor;

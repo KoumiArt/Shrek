@@ -45,8 +45,20 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 
+/**
+ * @author nicksun
+ *
+ */
 public class JsonMethodProcessor
 		implements HandlerMethodReturnValueHandler, HandlerMethodArgumentResolver, InitializingBean {
+
+	private static final String DELETE = "DELETE";
+
+	private static final String GET = "GET";
+
+	private static final int NUM_1 = 1;
+
+	private static final int NUM_2 = 2;
 
 	private static final Logger LOG = LoggerFactory.getLogger(JsonMethodProcessor.class);
 
@@ -173,13 +185,13 @@ public class JsonMethodProcessor
 			Type[] genericTypes = ((ParameterizedType) type).getActualTypeArguments();
 			Class<?> parameterType = (Class<?>) ((ParameterizedType) type).getRawType();
 			if (Collection.class.isAssignableFrom(parameterType)) {
-				if (genericTypes.length >= 1) {
+				if (genericTypes.length >= NUM_1) {
 					return objectMapper.getTypeFactory().constructCollectionType(
 							(Class<? extends Collection>) parameterType, getReferenceType(genericTypes[0]));
 				}
 
 			} else if (Map.class.isAssignableFrom(parameterType)) {
-				if (genericTypes.length >= 2) {
+				if (genericTypes.length >= NUM_2) {
 					return objectMapper.getTypeFactory().constructMapType((Class<? extends Map>) parameterType,
 							getReferenceType(genericTypes[0]), getReferenceType(genericTypes[1]));
 				} else if (genericTypes.length == 1) {
@@ -209,12 +221,13 @@ public class JsonMethodProcessor
 		MessageProtocol protocol = responseJson.protocol() == MessageProtocol.DEFAULT ? defaultProtocol
 				: responseJson.protocol();
 		if (returnValue == null) {
-			result = new SuccessData(new HashMap<String, String>());
+			result = new SuccessData(new HashMap<String, String>(1));
 		} else {
 			if (Objects.nonNull(responseJson)) {
-				if ((responseJson.location() == Location.MESSAGE)
-						|| ((returnValue instanceof String) && (responseJson.location() == Location.UNDEFINED))) {
-					result = new SuccessData(new HashMap<String, String>(), returnValue);
+				boolean successData = (responseJson.location() == Location.MESSAGE)
+						|| ((returnValue instanceof String) && (responseJson.location() == Location.UNDEFINED));
+				if (successData) {
+					result = new SuccessData(new HashMap<String, String>(1), returnValue);
 				} else {
 					for (BeanWrapper beanWrapper : beanWrappers) {
 						if (beanWrapper.supportsType(returnType)) {
@@ -278,7 +291,7 @@ public class JsonMethodProcessor
 	private String getRequestParams(NativeWebRequest webRequest) throws IOException {
 		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 		String method = request.getMethod();
-		if (method.equals("GET") || method.equals("DELETE")) {
+		if (GET.equals(method) || DELETE.equals(method)) {
 			return request.getQueryString();
 		}
 		StringBuffer bf = new StringBuffer();

@@ -32,6 +32,7 @@ public class SuccessData implements ResponseData {
 		this.msg = msg;
 	}
 
+	@Override
 	public boolean isSuccess() {
 		return success;
 	}

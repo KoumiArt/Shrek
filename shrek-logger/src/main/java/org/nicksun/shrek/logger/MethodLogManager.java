@@ -17,11 +17,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author nicksun
+ *
+ */
 @Aspect
 @Service
 public class MethodLogManager {
 
-	private Logger LOG = LoggerFactory.getLogger(MethodLogManager.class);
+	private static final Logger LOG = LoggerFactory.getLogger(MethodLogManager.class);
 
 	@Resource
 	private TaskExecutor methodLogExecutor;
@@ -50,19 +54,59 @@ public class MethodLogManager {
 	private void printLog(ProceedingJoinPoint joinPoint, MethodLog methodLog, Object result, String startTime,
 			String endTime) {
 		methodLogExecutor.execute(() -> {
-			boolean logEnabled = getLogEnabled(methodLog);
 			try {
-				if (logEnabled) {
-					String methodInfo = methodLog.value();
-					LOG.info("{}，执行开始时间{}，入参{}",
-							new Object[] { methodInfo, startTime, JackJsonUtil.toJson(joinPoint.getArgs()) });
-					String resp = StringUtils.EMPTY;
-					if (result instanceof String) {
-						resp = (String) result;
-					} else {
-						resp = JackJsonUtil.toJson(result);
+				switch (methodLog.level()) {
+				case INFO:
+					if (LOG.isInfoEnabled()) {
+						String methodInfo = methodLog.value();
+						LOG.info("{}，执行开始时间{}，入参{}",
+								new Object[] { methodInfo, startTime, JackJsonUtil.toJson(joinPoint.getArgs()) });
+						String resp = getResponseData(result);
+						LOG.info("{}，执行结束时间{}，出参{}", new Object[] { methodInfo, endTime, resp });
+						break;
 					}
-					LOG.info("{}，执行结束时间{}，出参{}", new Object[] { methodInfo, endTime, resp });
+				case ERROR:
+					if (LOG.isErrorEnabled()) {
+						String methodInfo = methodLog.value();
+						LOG.error("{}，执行开始时间{}，入参{}",
+								new Object[] { methodInfo, startTime, JackJsonUtil.toJson(joinPoint.getArgs()) });
+						String resp = getResponseData(result);
+						LOG.error("{}，执行结束时间{}，出参{}", new Object[] { methodInfo, endTime, resp });
+						break;
+					}
+					break;
+				case DEBUG:
+					if (LOG.isDebugEnabled()) {
+						String methodInfo = methodLog.value();
+						LOG.debug("{}，执行开始时间{}，入参{}",
+								new Object[] { methodInfo, startTime, JackJsonUtil.toJson(joinPoint.getArgs()) });
+						String resp = getResponseData(result);
+						LOG.debug("{}，执行结束时间{}，出参{}", new Object[] { methodInfo, endTime, resp });
+						break;
+					}
+					break;
+				case WARM:
+					if (LOG.isWarnEnabled()) {
+						String methodInfo = methodLog.value();
+						LOG.warn("{}，执行开始时间{}，入参{}",
+								new Object[] { methodInfo, startTime, JackJsonUtil.toJson(joinPoint.getArgs()) });
+						String resp = getResponseData(result);
+						LOG.warn("{}，执行结束时间{}，出参{}", new Object[] { methodInfo, endTime, resp });
+						break;
+					}
+					break;
+				case TRACE:
+					if (LOG.isTraceEnabled()) {
+						String methodInfo = methodLog.value();
+						LOG.trace("{}，执行开始时间{}，入参{}",
+								new Object[] { methodInfo, startTime, JackJsonUtil.toJson(joinPoint.getArgs()) });
+						String resp = getResponseData(result);
+						LOG.trace("{}，执行结束时间{}，出参{}", new Object[] { methodInfo, endTime, resp });
+						break;
+					}
+					break;
+				default:
+					break;
 				}
 			} catch (Exception e) {
 				LOG.info("记录方法的出入参异常", e);
@@ -70,28 +114,14 @@ public class MethodLogManager {
 		});
 	}
 
-	private boolean getLogEnabled(MethodLog methodLog) {
-		boolean logEnabled = false;
-		switch (methodLog.level()) {
-		case INFO:
-			logEnabled = LOG.isInfoEnabled();
-			break;
-		case ERROR:
-			logEnabled = LOG.isErrorEnabled();
-			break;
-		case DEBUG:
-			logEnabled = LOG.isDebugEnabled();
-			break;
-		case WARM:
-			logEnabled = LOG.isWarnEnabled();
-			break;
-		case TRACE:
-			logEnabled = LOG.isTraceEnabled();
-			break;
-		default:
-			break;
+	private String getResponseData(Object result) {
+		String resp = StringUtils.EMPTY;
+		if (result instanceof String) {
+			resp = (String) result;
+		} else {
+			resp = JackJsonUtil.toJson(result);
 		}
-		return logEnabled;
+		return resp;
 	}
 
 }

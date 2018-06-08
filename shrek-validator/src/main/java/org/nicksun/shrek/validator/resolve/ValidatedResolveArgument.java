@@ -5,6 +5,10 @@ import java.lang.annotation.Annotation;
 import org.nicksun.shrek.validator.ValidException;
 import org.nicksun.shrek.validator.annotation.Validated;
 
+/**
+ * @author nicksun
+ *
+ */
 public class ValidatedResolveArgument implements ResolveArgument {
 
 	@Override

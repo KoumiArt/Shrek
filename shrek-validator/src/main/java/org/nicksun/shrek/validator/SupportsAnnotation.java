@@ -8,5 +8,9 @@ import java.lang.annotation.Annotation;
  */
 public interface SupportsAnnotation {
 
+	/**
+	 * 支持的注解
+	 * @return
+	 */
 	Class<? extends Annotation> supportsAnnotation();
 }

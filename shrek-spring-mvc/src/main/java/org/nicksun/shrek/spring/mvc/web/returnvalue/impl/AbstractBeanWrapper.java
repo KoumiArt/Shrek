@@ -4,6 +4,10 @@ import org.nicksun.shrek.spring.mvc.web.returnvalue.BeanWrapper;
 import org.nicksun.shrek.spring.mvc.web.returnvalue.ResponseData;
 import org.springframework.core.MethodParameter;
 
+/**
+ * @author nicksun
+ *
+ */
 public abstract class AbstractBeanWrapper implements BeanWrapper {
 
 	@Override
@@ -14,6 +18,11 @@ public abstract class AbstractBeanWrapper implements BeanWrapper {
 		return supports(returnType);
 	}
 
+	/**
+	 * 支持的类型
+	 * @param returnType
+	 * @return
+	 */
 	public abstract boolean supports(MethodParameter returnType);
 
 }

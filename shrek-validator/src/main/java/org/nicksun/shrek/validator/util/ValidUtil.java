@@ -4,6 +4,10 @@ import java.util.Objects;
 
 import org.nicksun.shrek.validator.ValidException;
 
+/**
+ * @author nicksun
+ *
+ */
 public class ValidUtil {
 
 	private ValidUtil() {

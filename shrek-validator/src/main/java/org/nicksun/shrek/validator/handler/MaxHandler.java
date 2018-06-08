@@ -13,6 +13,8 @@ import org.nicksun.shrek.validator.util.ValidUtil;
  */
 public class MaxHandler implements ValidHandler {
 
+	private static final String NUM_PARTTEN = "\\D";
+
 	@Override
 	public Class<? extends Annotation> supportsAnnotation() {
 		return Max.class;
@@ -22,7 +24,7 @@ public class MaxHandler implements ValidHandler {
 	public void handleRequest(ValidatedContext context) throws ValidException {
 		Object fieldValue = context.getFieldValue();
 		String str = String.valueOf(fieldValue);
-		if (str.matches("\\D")) {
+		if (str.matches(NUM_PARTTEN)) {
 			throw new ValidException("@Max只能在用int类型上");
 		}
 		Max m = (Max) context.getAnnotation();

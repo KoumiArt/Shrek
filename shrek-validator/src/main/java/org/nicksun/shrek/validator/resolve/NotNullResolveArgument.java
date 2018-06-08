@@ -8,6 +8,10 @@ import org.nicksun.shrek.validator.annotation.NotNull;
 import org.nicksun.shrek.validator.util.GroupUtil;
 import org.nicksun.shrek.validator.util.ValidUtil;
 
+/**
+ * @author nicksun
+ *
+ */
 public class NotNullResolveArgument implements ResolveArgument {
 
 	@Override

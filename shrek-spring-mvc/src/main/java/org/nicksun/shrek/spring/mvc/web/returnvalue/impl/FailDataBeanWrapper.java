@@ -4,6 +4,10 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.nicksun.shrek.spring.mvc.web.returnvalue.ErrorCode;
 import org.nicksun.shrek.spring.mvc.web.returnvalue.ExceptionBeanWrapper;
 
+/**
+ * @author nicksun
+ *
+ */
 public class FailDataBeanWrapper implements ExceptionBeanWrapper {
 
 	@Override

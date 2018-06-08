@@ -22,6 +22,7 @@ public class JsonMethodSupportVaildatorProcessor extends JsonMethodProcessor {
 		this.validatorArgumentResolver = validatorArgumentResolver;
 	}
 
+	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
 			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		Object arg = super.resolveArgument(parameter, mavContainer, webRequest, binderFactory);

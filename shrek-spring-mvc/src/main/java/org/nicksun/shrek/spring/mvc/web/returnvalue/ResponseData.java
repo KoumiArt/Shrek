@@ -7,6 +7,10 @@ package org.nicksun.shrek.spring.mvc.web.returnvalue;
  */
 public interface ResponseData {
 	
+	/**
+	 * 是否成功
+	 * @return
+	 */
 	public boolean isSuccess();
 	
 }

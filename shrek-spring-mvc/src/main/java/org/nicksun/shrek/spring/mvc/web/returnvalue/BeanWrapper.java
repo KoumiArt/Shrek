@@ -9,10 +9,9 @@ import org.springframework.core.MethodParameter;
  */
 public interface BeanWrapper {
 	
-	/**
-     * 支持性判断
-     * 
-     * @param bean
+    /**
+     * 支持的类型
+     * @param returnType
      * @return
      */
     boolean supportsType(MethodParameter returnType);

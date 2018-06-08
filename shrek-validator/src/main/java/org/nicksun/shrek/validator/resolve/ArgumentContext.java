@@ -2,6 +2,10 @@ package org.nicksun.shrek.validator.resolve;
 
 import org.nicksun.shrek.validator.ValidatorHandlerResolver;
 
+/**
+ * @author nicksun
+ *
+ */
 public class ArgumentContext {
 
 	private ValidatorHandlerResolver validatorHandleManager;

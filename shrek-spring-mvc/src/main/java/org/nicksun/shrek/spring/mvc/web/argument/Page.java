@@ -1,5 +1,9 @@
 package org.nicksun.shrek.spring.mvc.web.argument;
 
+/**
+ * @author nicksun
+ *
+ */
 public class Page {
 
 	private Integer start;

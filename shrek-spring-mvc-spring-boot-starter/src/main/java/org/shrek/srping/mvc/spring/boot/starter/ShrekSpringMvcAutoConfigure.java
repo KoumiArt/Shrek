@@ -19,9 +19,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 
-@Configuration // 配置注解  
+/**
+ * @author nicksun
+ *
+ */
+@Configuration
 public class ShrekSpringMvcAutoConfigure {
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public RequestMappingHandlerAdapterPostProcessor requestMappingHandlerAdapterPostProcessor() {
 		RequestMappingHandlerAdapterPostProcessor processor = new RequestMappingHandlerAdapterPostProcessor();
@@ -29,6 +36,9 @@ public class ShrekSpringMvcAutoConfigure {
 		return processor;
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public JsonMethodProcessor jsonMethodProcessor() {
 		JsonMethodProcessor jsonMethodProcessor = new JsonMethodProcessor();
@@ -41,36 +51,57 @@ public class ShrekSpringMvcAutoConfigure {
 		return jsonMethodProcessor;
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public List<MessageProtocolProcessor> protocolProcessors() {
 		return Arrays.asList(new DefaultMessageProtocolProcessor(), new Base64MessageProtocolProcessor());
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public List<HttpContentEncodingHandler> httpContentEncodingHandlers() {
 		return Arrays.asList(new GzipHttpContentEncodingHandler());
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public HttpMessageConverter<byte[]> messageConverter() {
 		return new JsonMethodHttpMessageConverter();
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public boolean enableHttpContentEncoding() {
 		return true;
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public MessageProtocol defaultProtocol() {
 		return MessageProtocol.TEXT;
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public List<BeanWrapper> beanWrappers() {
 		return Arrays.asList(new DefaultBeanWrapper());
 	}
 
+	/**
+	 * @return
+	 */
 	@Bean
 	public JsonMethodHandlerExceptionResolver exceptionResolver() {
 		JsonMethodHandlerExceptionResolver jsonMethodHandlerExceptionResolver = new JsonMethodHandlerExceptionResolver();

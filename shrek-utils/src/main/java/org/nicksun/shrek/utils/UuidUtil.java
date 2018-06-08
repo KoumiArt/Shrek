@@ -8,20 +8,24 @@ import java.util.UUID;
  */
 public class UuidUtil {
 
-	private static final ThreadLocal<String> uuidThreadLocal = new ThreadLocal<>();
+	private static final ThreadLocal<String> UUID_THREADLOCAL = new ThreadLocal<>();
 
 	private UuidUtil() {
 	}
 
 	public static String getUuid() {
-		return uuidThreadLocal.get();
+		return UUID_THREADLOCAL.get();
+	}
+
+	public static void remove() {
+		UUID_THREADLOCAL.remove();
 	}
 
 	public static void randomUuid() {
-        randomUuid("");
+		randomUuid("");
 	}
 
 	public static void randomUuid(String title) {
-		uuidThreadLocal.set(title +  "[" + UUID.randomUUID().toString() + "]");
+		UUID_THREADLOCAL.set(title + "[" + UUID.randomUUID().toString() + "]");
 	}
 }

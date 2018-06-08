@@ -9,5 +9,10 @@ import org.nicksun.shrek.validator.ValidException;
  */
 public interface ValidHandler extends SupportsAnnotation {
 
+	/**
+	 * 处理请求
+	 * @param content
+	 * @throws ValidException
+	 */
 	void handleRequest(ValidatedContext content) throws ValidException;
 }
